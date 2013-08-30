@@ -19,8 +19,6 @@ int solve_tridiagonal_matrix_eq(int n)
     double u[n];
     double f[n];
     double d[n];
-    double a[n];
-    double c[n];
     double x[n];
     double h;
 
@@ -29,8 +27,6 @@ int solve_tridiagonal_matrix_eq(int n)
 
     // Initialize the arrays a, c and d:
     for(i=0; i <= n-1; i++){
-        a[i] = -1;
-        c[i] = -1;
         d[i] = 2;
     }
 
@@ -46,19 +42,17 @@ int solve_tridiagonal_matrix_eq(int n)
 
 
     // Forward substitution:
-    for(i=1; i <= n; i++){
-        d[i] -= c[i-1]*a[i]/d[i-1];
-        f[i] -= f[i-1]*a[i]/d[i-1];
+    for(i=1; i <= n-1; i++){
+        d[i] -= 1/d[i-1];
+        f[i] += f[i-1]/d[i-1];
     }
 
     // Backward substitution:
+    // First step:
+    u[n-1] = f[n-1]/d[n-1];
+    // Loop:
     for(i=n-2; i>=0; i--){
-        f[i] -= f[i+1]*c[i]/d[i+1];
-    }
-
-    // Find the solution:
-    for(i=0; i <= n-1; i++){
-        u[i] = f[i]/d[i];
+        u[i] = (f[i] + u[i+1])/d[i];
     }
 
     // Write to file:
@@ -68,6 +62,5 @@ int solve_tridiagonal_matrix_eq(int n)
         myfile << x[i] << "   " << u[i] << endl;
     }
     myfile.close();
-    cout << h;
     return 0;
 }
