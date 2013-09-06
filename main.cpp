@@ -60,7 +60,7 @@ int solve_tridiagonal_matrix_eq(int n)
 
     // Backward substitution:
     // First step:
-    v[n-1] = f[n-1]/d[n-1];
+    v[n] = f[n-1]/d[n-1];
     // Loop:
     for(i=n-2; i>=0; i--){
         v[i+1] = (f[i] + v[i+2])/d[i];
