@@ -7,19 +7,28 @@
 using namespace std;
 
 int solve_tridiagonal_matrix_eq(int n);
+int relative_error(int n);
 
 int main(int argc, char* argv[])
 {
     int n;
+    int r;
+
     n = atoi(argv[1]);
-    solve_tridiagonal_matrix_eq(n);
+    r = atoi(argv[2]);
+    if(r = 1){
+        solve_tridiagonal_matrix_eq(n);
+   }
+    if(r = 2){
+        relative_error(n);
+    }
     return 0;
 }
 
 int solve_tridiagonal_matrix_eq(int n)
 {
     int i;
-    char filename[20];
+    char filename[30];
     int n_filename;
 
     double d[n];
@@ -74,5 +83,60 @@ int solve_tridiagonal_matrix_eq(int n)
         myfile << x[i] << "   " << v[i] << endl;
     }
     myfile.close();
+    return 0;
+}
+
+int relative_error(int n)
+{
+    int i;
+
+    char filename[50];
+    int n_filename;
+
+    double v[n+2];
+    double x[n+2];
+    double u[n+2];
+    double epsilon[n];
+    double epsilon_max;
+    double h;
+    double h_log10;
+
+    // Compute h and h_log10:
+    h = 1.0/(n+1);
+    h_log10 = log10(h);
+
+    // Open and read x and v data from file:
+    fstream infile;
+    n_filename = sprintf(filename, "../Project1/data/solution_n%d.txt", n);
+    infile.open(filename, ios::in);
+    i = 0;
+    while(!infile.eof())
+    {
+        infile >> x[i];
+        infile >> v[i];
+
+        i++;
+    }
+    infile.close();
+
+    // Calcualte analytical solution u:
+    for(i=0; i <= n+1; i++){
+        u[i] = 1 - (1 - exp(-10))*x[i] - exp(-10*x[i]);
+    }
+
+    // Calculate relative error from i=1 to i=n and find max value for relative error:
+    epsilon_max = -7;
+    for(i=1; i <= n; i++){
+        epsilon[i] = log10(fabs((v[i] - u[i])/u[i]));
+        if(epsilon[i] > epsilon_max){
+            epsilon_max = epsilon[i];
+        }
+    }
+
+    // Write to file:
+    ofstream outfile;
+    outfile.open("relative_error.txt", ios::app);
+    outfile << endl << n <<	"   " << h_log10 << "   " << epsilon_max;
+    outfile.close();
     return 0;
 }
