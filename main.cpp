@@ -1,24 +1,30 @@
 #include <iostream>
 #include <cmath>
+#include <cstdio>
 #include <fstream>
+#include <cstdlib>
 
 using namespace std;
 
 int solve_tridiagonal_matrix_eq(int n);
 
-int main()
-{ 
-    solve_tridiagonal_matrix_eq(100);
+int main(int argc, char* argv[])
+{
+    int n;
+    n = atoi(argv[1]);
+    solve_tridiagonal_matrix_eq(n);
     return 0;
 }
 
 int solve_tridiagonal_matrix_eq(int n)
 {
     int i;
+    char filename[20];
+    int n_filename;
 
     double u[n];
     double f[n];
-    double d[n];
+    double v[n];
     double x[n];
     double h;
 
@@ -49,17 +55,18 @@ int solve_tridiagonal_matrix_eq(int n)
 
     // Backward substitution:
     // First step:
-    u[n-1] = f[n-1]/d[n-1];
+    v[n-1] = f[n-1]/d[n-1];
     // Loop:
     for(i=n-2; i>=0; i--){
-        u[i] = (f[i] + u[i+1])/d[i];
+        v[i] = (f[i] + v[i+1])/d[i];
     }
 
     // Write to file:
     fstream myfile;
-    myfile.open("solution.txt", ios::out);
+    n_filename = sprintf(filename, "solution_n%d.txt", n);
+    myfile.open(filename, ios::out);
     for(i=0; i <= n-1; i++){
-        myfile << x[i] << "   " << u[i] << endl;
+        myfile << x[i] << "   " << v[i] << endl;
     }
     myfile.close();
     return 0;
