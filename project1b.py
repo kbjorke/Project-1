@@ -16,8 +16,8 @@ for n in n_list:
     f = open(filename+".txt", "r")
 
     # Generate arrays
-    x = np.zeros(n)
-    v = np.zeros(n)
+    x = np.zeros(n+2)
+    v = np.zeros(n+2)
 
     # Read data from file to arrays
     i = 0

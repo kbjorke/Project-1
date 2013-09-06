@@ -22,10 +22,10 @@ int solve_tridiagonal_matrix_eq(int n)
     char filename[20];
     int n_filename;
 
-    double u[n];
+    double d[n];
     double f[n];
-    double v[n];
-    double x[n];
+    double v[n+2];
+    double x[n+2];
     double h;
 
     // Set step length:
@@ -36,14 +36,19 @@ int solve_tridiagonal_matrix_eq(int n)
         d[i] = 2;
     }
 
-    // Construct the array x, which go from the value 0+h to 1-h with n steps:
-    for(i=0; i <= n-1; i++){
-        x[i] = h*(1+i);
+    // Construct the array x, which go from the value 0 to 1 with n+2 steps of distance h:
+    for(i=0; i <= n+1; i++){
+        x[i] = h*i;
     }
+
+    // Dirichlet boundary conditions:
+    v[0] = 0;
+    v[n+1] = 0;
+
 
     // Compute the array f, which contains the source term for our eqation:
     for(i=0; i <= n-1; i++){
-        f[i] = h*h*100*exp(-10*x[i]);
+        f[i] = h*h*100*exp(-10*x[i+1]);
     }
 
 
@@ -58,14 +63,14 @@ int solve_tridiagonal_matrix_eq(int n)
     v[n-1] = f[n-1]/d[n-1];
     // Loop:
     for(i=n-2; i>=0; i--){
-        v[i] = (f[i] + v[i+1])/d[i];
+        v[i+1] = (f[i] + v[i+2])/d[i];
     }
 
     // Write to file:
     fstream myfile;
     n_filename = sprintf(filename, "solution_n%d.txt", n);
     myfile.open(filename, ios::out);
-    for(i=0; i <= n-1; i++){
+    for(i=0; i <= n+1; i++){
         myfile << x[i] << "   " << v[i] << endl;
     }
     myfile.close();
