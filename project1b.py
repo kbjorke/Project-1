@@ -3,14 +3,12 @@ import numpy as np
 import os
 
 # Initialte list with different n-values to be evaluated
-# n_list = [10, 100, 1000, 10000, 1e5]
-n_log = np.linspace(1, 5, 100)
-n_list = 10**n_log
+n_list = [10, 100, 1000, 10000, 1e5]
 
 # Loop over n-values
 for n in n_list:
     n = int(n)
-    call = './../Project1-build/Project1 %d 1' % n
+    call = './../Project1-build/Project1 -s %d' % n
     os.system(call)
 
     # Read corresponding txt file
@@ -33,7 +31,6 @@ for n in n_list:
     f.close()
     os.system("mv %s.txt data" % filename)
 
-"""
     # Generate analytical solution
     u = 1-(1-np.exp(-10))*x - np.exp(-10*x)
     
@@ -49,4 +46,3 @@ for n in n_list:
 
     # Move .eps file to data filder:
     os.system("mv %s.eps data" % filename)
-"""

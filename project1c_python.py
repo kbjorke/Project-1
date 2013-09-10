@@ -46,7 +46,7 @@ for n in n_list:
 
 # Plot and save .eps file:
 plt.plot(h_log10, epsilon_max)
-plt.xlabel('logh)')
+plt.xlabel('log(h)')
 plt.ylabel('max(epsilon)')
 plt.grid('on')
 plt.savefig("relative_error_python.eps")
