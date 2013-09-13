@@ -18,10 +18,12 @@ elif option == 4:
 # Loop over n-values
 
 for n in n_list:
+    if int(n) > 1e7:
+        print "n = %e to high value." % int(n)
+        break
     call = "./../Project1-build/Project1 -e %d" %int(n)
     os.system(call)
 
-os.system("mv relative_error.txt data")
 
 
 # Read file containing relative errors

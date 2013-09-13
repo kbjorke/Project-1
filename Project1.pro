@@ -4,3 +4,4 @@ CONFIG -= qt
 
 SOURCES += main.cpp
 
+LIBS += -larmadillo -lblas -llapack -lrt
