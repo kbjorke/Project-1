@@ -213,9 +213,6 @@ int time_usage(int n, double *x, double *v)
             else if(fabs(i-j) == 1){
                 A(i,j) = -1;
             }
-            else{
-                A(i,j) = 0;
-            }
         }
     }
 
@@ -246,8 +243,8 @@ int time_usage(int n, double *x, double *v)
     //time_unit(duration_tridiag, time_tridiag, unit_tridiag);
 
     cout << "n = " << n << " :" << endl;
-    cout << "Time for tridiagonl matrix method: " << duration_tridiag << " s" << endl;
-    cout << "Time for LU decomposition method : " << duration_LU << " s" << endl;
+    cout << "Time for tridiagonal matrix method: " << duration_tridiag << " s" << endl;
+    cout << "Time for LU decomposition method  : " << duration_LU << " s" << endl;
 
     return 0;
 }
