@@ -1,3 +1,15 @@
+"""
+Python-script to run the cpp program Project1 for a
+list of n-values and plot the solution return to file by
+the cpp to file.
+Moves solutions files and plots in .eps format to folder
+/data
+
+Usage: $~ python project1b.py
+
+Made by: Kristian Bjørke
+"""
+
 import matplotlib.pyplot as plt
 import numpy as np
 import os
@@ -11,7 +23,7 @@ for n in n_list:
     call = './../Project1-build/Project1 -s %d' % n
     os.system(call)
 
-    # Read corresponding txt file
+    # Open text file containing output
     filename = "solution_n%d" % n
     f = open(filename+".txt", "r")
 
@@ -44,5 +56,5 @@ for n in n_list:
     plt.savefig(filename+".eps")
     plt.hold(False)
 
-    # Move .eps file to data filder:
+    # Move .eps file to data folder:
     os.system("mv %s.eps data" % filename)

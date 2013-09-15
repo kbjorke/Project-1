@@ -1,15 +1,29 @@
+/* Program to preform matrix multiplication of two random n x n
+ * sized  matrices. Write to file the time used for the multiplication.
+ *
+ * Usage: $~ ./matrix_multiplication 1000 
+ *
+ * Important to add library -lrt when linking, to get the function
+ * clock_gettime() to work.
+ *
+ * Made by: Kristian Bjørke
+ * */
 #include <iostream>
 #include <armadillo>
 #include "time.h"
 #include <fstream>
+#include <cstdlib>
 
 using namespace std;
 using namespace arma;
 
 double getUnixTime();
 
-int main()
+int main(int argc, char* argv[])
 {
+	/* Main program, takes the n value for the matrix sizes
+	 * from commandline.
+	 */
 	int i;
 	int j;
 	int k;
@@ -21,12 +35,13 @@ int main()
 	int hours, minutes;
 	double seconds;
 
-	n = 1e3;
+	n = atoi(argv[1]);
 
 	mat B = randu<mat>(n,n);
 	mat C = randu<mat>(n,n);
 	mat A = zeros<mat>(n,n);
 	
+	// Loop for matrx multiplication, which is timed:
 	start = getUnixTime();
 	for(i=0; i<n; i++){
 		for(j=0; j<n; j++){
@@ -36,8 +51,10 @@ int main()
 		}
 	}
 	finish = getUnixTime();
+
 	duration = finish - start;
 
+	// Converts duration [s] to hours, minuttes and second.
 	hours = (int) duration/(60.0*60.0);
 	duration = duration - hours*60*60;
 	minutes = (int) duration/60.0;
@@ -58,6 +75,7 @@ int main()
 
 double getUnixTime()
 {
+	/* Function to get current time, with precission of microsecond */
     struct timespec tv;
 
     if(clock_gettime(CLOCK_REALTIME, &tv) != 0) return 0;
